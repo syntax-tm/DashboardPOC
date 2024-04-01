@@ -1,0 +1,98 @@
+﻿@using ApexCharts
+@using DashboardPOC.Interfaces
+@using LabelPosition = ApexCharts.LabelPosition
+
+<style>
+    .apexcharts-xaxis {
+        display: none !important;
+    }
+
+    .apexcharts-menu-icon {
+        display: none !important;
+    }
+
+    .apexcharts-grid-borders *:not(:last-child), .apexcharts-gridlines-horizontal {
+        display: none;
+    }
+
+    .apexcharts-grid-borders :last-child {
+        display: block;
+    }
+</style>
+
+<MudPaper Class="" Outlined="true" Elevation="2">
+    <MudText Class="ma-4">@Title</MudText>
+
+    <div class="mx-2 my-4">
+        <ApexChart TItem="OrderSummary" Options="options"
+                   XAxisType="XAxisType.Category">
+
+            <ApexPointSeries TItem="OrderSummary"
+                             Items="Data"
+                             SeriesType="SeriesType.Bar"
+                             Name="Group 1"
+                             XValue="@(e => e.Name)"
+                             YValue="@(e => e.HighlyDivertedOrders)"
+                             OrderByDescending="@(e => e.X)" />
+
+            <ApexPointSeries TItem="OrderSummary"
+                             Items="Data"
+                             SeriesType="SeriesType.Bar"
+                             Name="Group 2"
+                             XValue="@(e => e.Name)"
+                             YValue="@(e => e.ControlledSubstanceOrders)"
+                             OrderByDescending="@(e => e.X)" />
+
+        </ApexChart>
+    </div>
+</MudPaper>
+
+
+@code {
+
+    [Inject]
+    private IOrderService _orderService { get; set; }
+
+    private ApexChartOptions<OrderSummary> options = new ()
+    {
+        Theme = new ()
+        {
+            Mode = Mode.Light,
+            Palette = PaletteType.Palette1
+        },
+        Annotations = new ()
+        {
+            Xaxis =
+            [
+                new ()
+                {
+                    X = 100,
+                    BorderWidth = 2,
+                    BorderColor = Colors.Yellow.Default,
+                    StrokeDashArray = 5
+                }
+            ]
+        },
+        PlotOptions = new ()
+        {
+            Bar = new ()
+            {
+                Horizontal = true
+            }
+        },
+        Legend = new ()
+        {
+            Position = LegendPosition.Bottom
+        }
+    };
+
+    [Parameter]
+    public string Title { get; set; }
+
+    private List<OrderSummary> Data { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        Data = _orderService.GetOrders();
+    }
+}

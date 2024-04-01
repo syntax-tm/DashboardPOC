@@ -1,0 +1,175 @@
+﻿@using ApexCharts
+
+<style>
+    .apexcharts-xaxis {
+        display: none !important;
+    }
+</style>
+
+<MudPaper Outlined="true" Elevation="2">
+    <MudText Class="ma-4">@Title</MudText>
+    <div class="mx-2 my-4">
+        <ApexChart TItem="GroupData" Options="options">
+            <ApexPointSeries TItem="GroupData"
+                             Items="Data"
+                             SeriesType="SeriesType.Donut"
+                             XValue="@(e => e.Name)"
+                             YAggregate="@(e => e.Sum(e => e.NumOrders))"
+                             OrderBy="@(e => e.X)" />
+        </ApexChart>
+    </div>
+</MudPaper>
+
+@code {
+
+    private ApexChartOptions<GroupData> options = new () { Theme = new () { Mode = Mode.Light } };
+
+    private List<GroupData> Data { get; set; } = new ();
+
+    [Parameter]
+    public string Title { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Data =
+        [
+            new (1),
+            new (2),
+            new (3),
+            new (4),
+            new (5),
+            new (6)
+        ];
+    }
+
+    public class GroupData
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal OrderTotal { get; set; }
+        public int NumOrders { get; set; }
+        public decimal AverageOrderPrice { get; set; }
+
+        public GroupData(int id)
+        {
+            Id = id;
+
+            Name = $"Group {Id}";
+
+            var random = new Random();
+
+            OrderTotal = (decimal) random.NextDouble() * 250000 + 15000;
+            NumOrders = random.Next(2500, 7000);
+            AverageOrderPrice = OrderTotal / NumOrders;
+        }
+    }
+
+    public interface IOrderData
+    {
+        decimal Total { get; }
+    }
+
+    public class SimpleOrderData : IOrderData
+    {
+        public decimal Total { get; set; }
+
+        public SimpleOrderData()
+        {
+            var random = new Random();
+
+            Total = (decimal)random.NextDouble() * 150 + 10;
+        }
+
+        public SimpleOrderData(decimal total)
+        {
+            Total = total;
+        }
+    }
+
+    public class OrderData : IOrderData
+    {
+        public decimal Total => Items.Sum(i => i.Quantity * i.Price);
+        public int TotalQuantity => Items.Sum(i => i.Quantity);
+        public List<ItemData> Items { get; set; } = new ();
+
+        public OrderData()
+        {
+
+        }
+
+        public OrderData(int lineItems)
+        {
+            var random = new Random();
+
+            for (var i = 0; i <= lineItems; i++)
+            {
+                var price = (decimal) random.NextDouble() * 100 + 5;
+                var qty = random.Next(1, 4);
+                var item = new ItemData(price, qty);
+
+                Items.Add(item);
+            }
+        }
+    }
+
+    public class ItemData
+    {
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
+
+        public ItemData()
+        {
+
+        }
+
+        public ItemData(decimal price, int quantity = 1)
+        {
+            Price = price;
+            Quantity = quantity;
+        }
+    }
+
+    public class ComparisonData
+    {
+        public string Name { get; set; }
+        public DateTime Date { get; set; }
+        public int Total { get; set; }
+        public string Period => Date.ToString(@"M yy");
+    }
+
+    public class OrderSummary
+    {
+        public string Title { get; set; }
+        public int Schedule { get; set; }
+        public double Total { get; set; }
+
+        public OrderSummary(int schedule)
+        {
+            Schedule = schedule;
+
+            Title = Schedule switch
+            {
+                1 => @"CI",
+                2 => @"CII",
+                3 => @"CIII",
+                4 => @"CIV",
+                5 => @"CV",
+                _ => string.Empty
+            };
+
+            var random = new Random();
+
+            var total = schedule switch
+            {
+                1 => 0,
+                2 => random.NextDouble() * 30,
+                3 => random.NextDouble() * 80,
+                4 => random.NextDouble() * 60,
+                5 => random.NextDouble() * 50,
+                _ => 0
+            };
+
+            Total = Math.Round(total, 2);
+        }
+    }
+}
