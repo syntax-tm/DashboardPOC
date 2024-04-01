@@ -3,6 +3,11 @@ on:
   push:
     branches:
     - master
+    paths-ignore:
+    - '.github/**'
+    - '.gitignore'
+    - 'docs/**'
+    - 'README.md'
 env:
   AZURE_WEBAPP_NAME: dashboardpoc-syntax-tm
   AZURE_WEBAPP_PACKAGE_PATH: ./published
