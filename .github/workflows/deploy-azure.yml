@@ -4,9 +4,8 @@ on:
     branches:
     - master
     paths-ignore:
-    - '.github/**'
-    - '.gitignore'
     - 'docs/**'
+    - '.gitignore'
     - 'README.md'
 env:
   AZURE_WEBAPP_NAME: dashboardpoc-syntax-tm
