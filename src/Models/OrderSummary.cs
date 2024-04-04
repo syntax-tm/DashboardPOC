@@ -1,18 +1,38 @@
 ﻿namespace DashboardPOC.Models;
-public class OrderSummary
+
+public abstract class OrderSummary
 {
     private readonly Random _random = new ();
 
-    public string Name { get; set; }
-    public int HighlyDivertedOrders { get; set; }
-    public int ControlledSubstanceOrders { get; set; }
+    public abstract string Name { get; }
+    public int Orders { get; set; }
 
-    public OrderSummary(string name)
+    protected OrderSummary()
     {
-        Name = name;
+        Orders = _random.Next(30, 100);
+    }
+}
 
-        HighlyDivertedOrders = _random.Next(30, 100);
-        ControlledSubstanceOrders = _random.Next(20, 150);
+public class HighlyDivertedOrderSummary : OrderSummary
+{
+    private const string HIGHLY_DIVERTED = @"Highly Diverted";
+    
+    public override string Name { get; } = HIGHLY_DIVERTED;
+
+    public HighlyDivertedOrderSummary()
+    {
+
+    }
+}
+
+public class ControlledSubstanceOrderSummary : OrderSummary
+{
+    private const string CONTROLLED_SUBSTANCES = @"Controlled Substances";
+    
+    public override string Name { get; } = CONTROLLED_SUBSTANCES;
+
+    public ControlledSubstanceOrderSummary()
+    {
 
     }
 }

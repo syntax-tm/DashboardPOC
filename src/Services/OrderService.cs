@@ -9,8 +9,27 @@ public class OrderService : IOrderService
     {
         return
         [
-            new (@"Highly Diverted"),
-            new (@"Controlled Substances")
+            new HighlyDivertedOrderSummary(),
+            new ControlledSubstanceOrderSummary()
+        ];
+    }
+
+
+    public List<OrderSummary> GetControlledSubstanceOrders()
+    {
+        return
+        [
+            new ControlledSubstanceOrderSummary(),
+            new ControlledSubstanceOrderSummary()
+        ];
+    }
+
+    public List<OrderSummary> GetHighlyDivertedOrders()
+    {
+        return
+        [
+            new HighlyDivertedOrderSummary(),
+            new HighlyDivertedOrderSummary()
         ];
     }
 }

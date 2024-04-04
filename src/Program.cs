@@ -12,15 +12,18 @@ builder.Services.AddRazorComponents()
 builder.Services.AddMudServices();
 
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddSingleton<IThemeService, ThemeService>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
+#pragma warning disable IDE0058 // Expression value is never used
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+#pragma warning restore IDE0058 // Expression value is never used
 }
 
 app.UseHttpsRedirection();

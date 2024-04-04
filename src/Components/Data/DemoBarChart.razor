@@ -1,46 +1,28 @@
 ﻿@using ApexCharts
 @using DashboardPOC.Interfaces
 @using LabelPosition = ApexCharts.LabelPosition
+@inject IOrderService OrderService
 
-<style>
-    .apexcharts-xaxis {
-        display: none !important;
-    }
-
-    .apexcharts-menu-icon {
-        display: none !important;
-    }
-
-    .apexcharts-grid-borders *:not(:last-child), .apexcharts-gridlines-horizontal {
-        display: none;
-    }
-
-    .apexcharts-grid-borders :last-child {
-        display: block;
-    }
-</style>
-
-<MudPaper Class="" Outlined="true" Elevation="2">
+<MudPaper Outlined="true" Elevation="2">
     <MudText Class="ma-4">@Title</MudText>
-
     <div class="mx-2 my-4">
         <ApexChart TItem="OrderSummary" Options="options"
                    XAxisType="XAxisType.Category">
 
             <ApexPointSeries TItem="OrderSummary"
-                             Items="Data"
+                             Items="Group1OrderData"
                              SeriesType="SeriesType.Bar"
                              Name="Group 1"
                              XValue="@(e => e.Name)"
-                             YValue="@(e => e.HighlyDivertedOrders)"
+                             YValue="@(e => e.Orders)"
                              OrderByDescending="@(e => e.X)" />
 
             <ApexPointSeries TItem="OrderSummary"
-                             Items="Data"
+                             Items="Group2OrderData"
                              SeriesType="SeriesType.Bar"
                              Name="Group 2"
                              XValue="@(e => e.Name)"
-                             YValue="@(e => e.ControlledSubstanceOrders)"
+                             YValue="@(e => e.Orders)"
                              OrderByDescending="@(e => e.X)" />
 
         </ApexChart>
@@ -50,8 +32,8 @@
 
 @code {
 
-    [Inject]
-    private IOrderService _orderService { get; set; }
+    private List<OrderSummary> Group1OrderData { get; set; }
+    private List<OrderSummary> Group2OrderData { get; set; }
 
     private ApexChartOptions<OrderSummary> options = new ()
     {
@@ -89,10 +71,9 @@
     [Parameter]
     public string Title { get; set; }
 
-    private List<OrderSummary> Data { get; set; } = new();
-
     protected override void OnInitialized()
     {
-        Data = _orderService.GetOrders();
+        Group1OrderData = OrderService.GetOrders();
+        Group2OrderData = OrderService.GetOrders();
     }
 }

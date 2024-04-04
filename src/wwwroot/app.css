@@ -1,20 +1,68 @@
+/* ReSharper disable CssNotResolved */
 /*
 	This CSS file matches the color scheme from MudBlazor to Bootstrap when utilized for authentication.
 	The file remains available at all times for demonstration purposes,
 	but it is exclusively employed in the 'App.razor' component when authentication is enabled.
 */
 
+@import 'temp/MudBlazor.min.css';
+
 .btn-primary {
-    text-transform: uppercase;
-    --bs-btn-bg: var(--mud-palette-primary) !important;
-    --bs-btn-hover-bg: var(--mud-palette-primary-darken) !important;
+  text-transform: uppercase;
+  /* ReSharper disable once CssNotResolved */
+  --bs-btn-bg: var(--mud-palette-primary) !important;
+  /* ReSharper disable once CssNotResolved */
+  --bs-btn-hover-bg: var(--mud-palette-primary-darken) !important;
 }
 
 .nav-pills {
-    --bs-nav-pills-link-active-bg: var(--mud-palette-primary) !important;
+  /* ReSharper disable once CssNotResolved */
+  --bs-nav-pills-link-active-bg: var(--mud-palette-primary) !important;
 }
 
 .nav {
-    --bs-nav-link-color: var(--mud-palette-primary) !important;
-    --bs-nav-link-hover-color: var(--mud-palette-primary-darken) !important;
+  /* ReSharper disable once CssNotResolved */
+  --bs-nav-link-color: var(--mud-palette-primary) !important;
+  /* ReSharper disable once CssNotResolved */
+  --bs-nav-link-hover-color: var(--mud-palette-primary-darken) !important;
 }
+
+.apexcharts-xaxis,
+.apexcharts-xaxis-tick,
+.apexcharts-menu-icon {
+  display: none !important;
+}
+
+.apexcharts-grid-borders *:not(:last-child),
+.apexcharts-gridlines-horizontal {
+  display: none !important;
+}
+
+.apexcharts-grid-borders :last-child {
+  display: block !important;
+}
+
+/* ReSharper disable CssNotResolved */
+.apexcharts-legend-text,
+.apexcharts-text,
+.apexcharts-yaxis-label {
+  color: var(--mud-palette-text-primary) !important;
+  fill: var(--mud-palette-text-primary) !important;
+}
+
+.apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
+  color: var(--mud-palette-text-primary) !important;
+  background: var(--mud-palette-drawer-background) !important;
+  border-bottom: 1px solid var(--mud-palette-divider) !important;
+}
+
+.apexcharts-tooltip.apexcharts-theme-light {
+  color: var(--mud-palette-text-primary) !important;
+  background: var(--mud-palette-background) !important;
+  border: 1px solid var(--mud-palette-lines) !important;
+  z-index: var(--mud-zindex-tooltip) !important;
+}
+
+/* ReSharper restore CssNotResolved */
+
+
