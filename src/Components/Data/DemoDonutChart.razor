@@ -1,62 +1,49 @@
 ﻿@using ApexCharts
 @using DashboardPOC.Interfaces
+@using Color = MudBlazor.Color
+@using Size = MudBlazor.Size
+@inject IOrderService OrderService
 
-<MudPaper Outlined="true" Elevation="2">
-    <MudText Class="ma-4">@Title</MudText>
+@if (Data == null)
+{
+    <MudPaper Outlined="true" Elevation="2">
+        <MudProgressCircular Color="Color.Default" Indeterminate="true"
+                             Class="object-center" />
+    </MudPaper>
+}
+else
+{
+    <MudPaper Outlined="true" Elevation="2">
+        <MudText Class="ma-4">@Title</MudText>
 
-    <div class="mx-2 my-4">
-        <ApexChart TItem="GroupData">
+        <div class="mx-2 my-4">
+            <ApexChart TItem="GroupData">
 
-            <ApexPointSeries TItem="GroupData"
-                             Items="Data"
-                             SeriesType="SeriesType.Donut"
-                             XValue="@(e => e.Name)"
-                             YAggregate="@(e => e.Sum(f => f.NumOrders))"
-                             OrderBy="@(e => e.X)" />
+                <ApexPointSeries TItem="GroupData"
+                                 Items="Data"
+                                 SeriesType="SeriesType.Donut"
+                                 XValue="@(e => e.Name)"
+                                 YAggregate="@(e => e.Sum(f => f.NumOrders))"
+                                 OrderBy="@(e => e.X)" />
 
-        </ApexChart>
-    </div>
-</MudPaper>
+            </ApexChart>
+        </div>
+    </MudPaper>
+}
 
 @code {
 
-    private List<GroupData> Data { get; set; } = new ();
+    private List<GroupData> Data { get; set; }
 
     [Parameter]
     public string Title { get; set; }
-
-    protected override void OnInitialized()
+    
+    protected override async Task OnInitializedAsync()
     {
-        Data =
-        [
-            new (1),
-            new (2),
-            new (3),
-            new (4),
-            new (5),
-            new (6)
-        ];
-    }
+        await Task.Delay(Random.Shared.Next(500, 2000));
 
-    public class GroupData
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public decimal OrderTotal { get; set; }
-        public int NumOrders { get; set; }
-        public decimal AverageOrderPrice { get; set; }
+        Data = OrderService.GetGroups();
 
-        public GroupData(int id)
-        {
-            Id = id;
-
-            Name = $"Group {Id}";
-
-            var random = new Random();
-
-            OrderTotal = (decimal) random.NextDouble() * 250000 + 15000;
-            NumOrders = random.Next(2500, 7000);
-            AverageOrderPrice = OrderTotal / NumOrders;
-        }
+        StateHasChanged();
     }
 }

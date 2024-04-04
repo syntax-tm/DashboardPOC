@@ -14,22 +14,18 @@ public class OrderService : IOrderService
         ];
     }
 
-
-    public List<OrderSummary> GetControlledSubstanceOrders()
+    public List<GroupData> GetGroups()
     {
         return
         [
-            new ControlledSubstanceOrderSummary(),
-            new ControlledSubstanceOrderSummary()
-        ];
-    }
-
-    public List<OrderSummary> GetHighlyDivertedOrders()
-    {
-        return
-        [
-            new HighlyDivertedOrderSummary(),
-            new HighlyDivertedOrderSummary()
+            new (1),
+            new (2),
+            new (3),
+            new (4),
+            new (5),
+            new (6),
+            new (7),
+            new (8)
         ];
     }
 }

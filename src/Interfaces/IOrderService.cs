@@ -5,6 +5,5 @@ namespace DashboardPOC.Interfaces;
 public interface IOrderService
 {
     List<OrderSummary> GetOrders();
-    List<OrderSummary> GetControlledSubstanceOrders();
-    List<OrderSummary> GetHighlyDivertedOrders();
+    List<GroupData> GetGroups();
 }
