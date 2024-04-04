@@ -1,9 +1,7 @@
-﻿using DashboardPOC.Models;
-
-namespace DashboardPOC.Interfaces;
+﻿namespace DashboardPOC.Interfaces;
 
 public interface IOrderService
 {
-    List<OrderSummary> GetOrders();
-    List<GroupData> GetGroups();
+    List<IDataValue> GetOrders();
+    List<IDataValue> GetGroups();
 }

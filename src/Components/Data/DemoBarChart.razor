@@ -16,23 +16,23 @@ else
     <MudPaper Outlined="true" Elevation="2">
         <MudText Class="ma-4">@Title</MudText>
         <div class="mx-2 my-4">
-            <ApexChart TItem="OrderSummary" Options="options"
+            <ApexChart TItem="IDataValue" Options="options"
                        XAxisType="XAxisType.Category">
 
-                <ApexPointSeries TItem="OrderSummary"
+                <ApexPointSeries TItem="IDataValue"
                                  Items="Group1OrderData"
                                  SeriesType="SeriesType.Bar"
                                  Name="Group 1"
                                  XValue="@(e => e.Name)"
-                                 YValue="@(e => e.Orders)"
+                                 YValue="@(e => e.Value)"
                                  OrderByDescending="@(e => e.X)" />
 
-                <ApexPointSeries TItem="OrderSummary"
+                <ApexPointSeries TItem="IDataValue"
                                  Items="Group2OrderData"
                                  SeriesType="SeriesType.Bar"
                                  Name="Group 2"
                                  XValue="@(e => e.Name)"
-                                 YValue="@(e => e.Orders)"
+                                 YValue="@(e => e.Value)"
                                  OrderByDescending="@(e => e.X)" />
 
             </ApexChart>
@@ -42,10 +42,10 @@ else
 
 @code {
 
-    private List<OrderSummary> Group1OrderData { get; set; }
-    private List<OrderSummary> Group2OrderData { get; set; }
+    private List<IDataValue> Group1OrderData { get; set; }
+    private List<IDataValue> Group2OrderData { get; set; }
 
-    private ApexChartOptions<OrderSummary> options = new ()
+    private ApexChartOptions<IDataValue> options = new()
     {
         Theme = new ()
         {

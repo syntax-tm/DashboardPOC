@@ -17,13 +17,13 @@ else
         <MudText Class="ma-4">@Title</MudText>
 
         <div class="mx-2 my-4">
-            <ApexChart TItem="GroupData">
+            <ApexChart TItem="IDataValue">
 
-                <ApexPointSeries TItem="GroupData"
+                <ApexPointSeries TItem="IDataValue"
                                  Items="Data"
                                  SeriesType="SeriesType.Donut"
                                  XValue="@(e => e.Name)"
-                                 YAggregate="@(e => e.Sum(f => f.NumOrders))"
+                                 YValue="@(e => e.Value)"
                                  OrderBy="@(e => e.X)" />
 
             </ApexChart>
@@ -33,7 +33,7 @@ else
 
 @code {
 
-    private List<GroupData> Data { get; set; }
+    private List<IDataValue> Data { get; set; }
 
     [Parameter]
     public string Title { get; set; }
