@@ -1,26 +1,84 @@
 ﻿@page "/"
+@inject IOrderService OrderService
 
-@using DashboardPOC.Components.Data
+@using DashboardPOC.Components.Charts
+@using DashboardPOC.Components.Demo
 
 <PageTitle>Home</PageTitle>
 
-<MudContainer Class="d-flex" MaxWidth="MaxWidth.False">
-    <MudGrid Class="d-flex justify-space-around">
-        <MudItem xs="12" sm="6" Class="pa-2">
-            <DemoDonutChart Title="Ordering Volume" />
-        </MudItem>
-        <MudItem xs="12" sm="6" Class="pa-2">
-            <DemoDonutChart Title="Dispensing Volume" />
-        </MudItem>
-        <MudItem xs="12" sm="6" Class="pa-2">
-            <DemoBarChart Title="Peer Comparison" />
-        </MudItem>
-        <MudItem xs="12" sm="6" Class="pa-2">
-            <DemoBarChart Title="Peer Comparison" />
-        </MudItem>
-    </MudGrid>
-</MudContainer>
+@if (!IsLoaded)
+{
+    <MudContainer Class="d-flex" MaxWidth="MaxWidth.False">
+        <MudProgressCircular Color="Color.Default" Indeterminate="true"
+                             Class="object-center" />
+    </MudContainer>
+}
+else
+{
+    <MudContainer MaxWidth="MaxWidth.False">
+        <MudGrid Class="justify-center">
+            <MudItem xs="6" Class="pa-2">
+                <DemoSnackbar />
+            </MudItem>
+            <MudItem xs="6" Class="pa-2">
+                <MudPaper Outlined="true" Elevation="2" Class="mb-2 mt-1 pa-2 d-flex justify-xl-center justify-md-space-around">
+                    <MudFab StartIcon="@Icons.Material.Filled.Refresh" Color="Color.Default" IconColor="Color.Default" Class="ma-1"
+                            Label="Refresh"
+                            Disabled="true" />
+                    <MudFab StartIcon="@Icons.Material.Filled.Autorenew" Color="Color.Primary" IconColor="Color.Default" Class="ma-1"
+                            Disabled="true" />
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+        <MudGrid Class="d-flex justify-space-around">
+            <MudItem xs="12" sm="6" Class="pa-2">
+                <DonutChart Id="@MAIN_CHART_ID" Title="Ordering Volume" Data="@OrderingVolumeData" GroupName="@VOLUME_GROUP_NAME" />
+            </MudItem>
+            <MudItem xs="12" sm="6" Class="pa-2">
+                <DonutChart Title="Dispensing Volume" Data="@DispensingVolumeData" GroupName="@VOLUME_GROUP_NAME" />
+            </MudItem>
+            <MudItem xs="12" sm="6" Class="pa-2">
+                <BarChart Id="@MAIN_CHART_ID_2" Title="@MARKET_COMPARISON" Horizontal="true"
+                          Group1OrderData="@Group1OrderData" Group2OrderData="@Group2OrderData" GroupName="@MARKET_COMPARISON" />
+            </MudItem>
+            <MudItem xs="12" sm="6" Class="pa-2">
+                <BarChart ParentChartId="@MAIN_CHART_ID_2" Title="@MARKET_COMPARISON" Horizontal="true"
+                          Group1OrderData="@Group3OrderData" Group2OrderData="@Group4OrderData" GroupName="@MARKET_COMPARISON" />
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+}
 
 @code {
+
+    private const string VOLUME_GROUP_NAME = @"Volume";
+    private const string MARKET_COMPARISON = @"Market Comparison";
+    private const string MAIN_CHART_ID = @"chart_1";
+    private const string MAIN_CHART_ID_2 = @"chart_2";
+
+    public bool IsLoaded { get; set; }
+    public IList<IDataValue> OrderingVolumeData { get; set; }
+    public IList<IDataValue> DispensingVolumeData { get; set; }
+    public IList<IDataValue> Group1OrderData { get; set; }
+    public IList<IDataValue> Group2OrderData { get; set; }
+    public IList<IDataValue> Group3OrderData { get; set; }
+    public IList<IDataValue> Group4OrderData { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(Random.Shared.Next(500, 2000));
+
+        OrderingVolumeData = OrderService.GetGroups();
+        DispensingVolumeData = OrderService.GetGroups();
+
+        Group1OrderData = OrderService.GetOrders();
+        Group2OrderData = OrderService.GetOrders();
+        Group3OrderData = OrderService.GetOrders();
+        Group4OrderData = OrderService.GetOrders();
+
+        IsLoaded = true;
+
+        //StateHasChanged();
+    }
 
 }

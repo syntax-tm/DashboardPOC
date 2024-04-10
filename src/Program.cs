@@ -1,6 +1,7 @@
 using DashboardPOC.Components;
 using DashboardPOC.Interfaces;
 using DashboardPOC.Services;
+using MudBlazor;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddMudServices();
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.ShowCloseIcon = true;
+    config.SnackbarConfiguration.PreventDuplicates = true;
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
+});
 
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddSingleton<IThemeService, ThemeService>();

@@ -9,15 +9,15 @@ public class OrderService : IOrderService
     {
         return
         [
-            new DataValue(@"Highly Diverted", 20, 100),
-            new DataValue(@"Controlled Substances", 40, 125)
+            new DataValue(@"High Risk", 0, 150),
+            new DataValue(@"Controlled Substances", 0, 200)
         ];
     }
 
     public List<IDataValue> GetGroups()
     {
-        const int MIN = 2500;
-        const int MAX = 7000;
+        const int MIN = 50;
+        const int MAX = 1000;
 
         return
         [

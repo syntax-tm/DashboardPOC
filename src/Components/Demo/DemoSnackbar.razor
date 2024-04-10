@@ -1,0 +1,22 @@
+﻿@inject ISnackbar Snackbar
+
+<MudPaper Outlined="true" Elevation="2" Class="mb-2 mt-1 pa-2 d-flex justify-xl-center justify-md-space-around">
+    <MudFab StartIcon="@Icons.Material.Filled.Add" Color="Color.Default" IconColor="Color.Default" Class="ma-1"
+            @onclick="@(() => Snackbar.Add("Just the default stuff.", Severity.Normal, config => { config.ShowCloseIcon = true; }))"
+            Label="Create Toast" />
+    <MudFab StartIcon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" IconColor="Color.Default" Class="ma-1"
+            @onclick="@(() => Snackbar.Add("Success! Hopefully this was a successful example.", Severity.Success, config => { config.ShowCloseIcon = true; }))" />
+    <MudFab StartIcon="@Icons.Material.Filled.Info" Color="Color.Info" IconColor="Color.Default" Class="ma-1"
+            @onclick="@(() => Snackbar.Add("TODO: Add informative message text.", Severity.Info, config => { config.ShowCloseIcon = true; }))" />
+    <MudFab StartIcon="@Icons.Material.Filled.Warning" Color="Color.Warning" IconColor="Color.Default" Class="ma-1"
+            @onclick="@(() => Snackbar.Add("Warning! You are about to receive a warning.", Severity.Warning, config => { config.ShowCloseIcon = true; }))" />
+    <MudFab StartIcon="@Icons.Material.Filled.Error" Color="Color.Error" IconColor="Color.Default" Class="ma-1"
+            @onclick="@(() => Snackbar.Add("Uh-oh, an error happened!", Severity.Error, config => { config.ShowCloseIcon = true; }))" />
+</MudPaper>
+
+@code {
+
+    [Parameter]
+    public Justify Justify { get; set; } = Justify.FlexStart;
+
+}

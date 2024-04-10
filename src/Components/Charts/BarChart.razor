@@ -1,0 +1,64 @@
+﻿@using ApexCharts
+@inject IOrderService OrderService
+@inherits DashboardPOC.Components.Charts.Base.ChartComponentBase
+
+@if (Group1OrderData == null || Group2OrderData == null)
+{
+    <MudPaper Outlined="true" Elevation="2">
+        <MudProgressCircular Color="Color.Default" Indeterminate="true"
+                             Class="object-center" />
+    </MudPaper>
+}
+else
+{
+    <MudPaper Outlined="true" Elevation="2">
+        <MudText Class="ma-4">@Title</MudText>
+        <div class="mx-2 my-4">
+            <ApexChart TItem="IDataValue" Options="Options"
+                       XAxisType="XAxisType.Category">
+                
+                @* TODO: create an ApexPointSeries for every item in data *@
+                @* TODO: add configuration options for each set of data *@
+                <ApexPointSeries TItem="IDataValue"
+                                 Items="Group1OrderData"
+                                 SeriesType="SeriesType.Bar"
+                                 Name="Group 1"
+                                 XValue="@(e => e.Name)"
+                                 YValue="@(e => e.Value)"
+                                 OrderByDescending="@(e => e.X)"
+                                 ShowDataLabels />
+
+                <ApexPointSeries TItem="IDataValue"
+                                 Items="Group2OrderData"
+                                 SeriesType="SeriesType.Bar"
+                                 Name="Group 2"
+                                 XValue="@(e => e.Name)"
+                                 YValue="@(e => e.Value)"
+                                 OrderByDescending="@(e => e.X)"
+                                 ShowDataLabels />
+
+            </ApexChart>
+        </div>
+    </MudPaper>
+}
+
+@code {
+
+    public override ChartType Type => ChartType.Bar;
+
+    [Parameter]
+    public bool Horizontal { get; set; }
+
+    [Parameter]
+    public IList<IDataValue> Group1OrderData { get; set; }
+
+    [Parameter]
+    public IList<IDataValue> Group2OrderData { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        Options = ChartOptionsFactory.CreateBarChartOptions<IDataValue>(this, Horizontal);
+
+        return Task.CompletedTask;
+    }
+}

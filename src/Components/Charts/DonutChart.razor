@@ -1,0 +1,64 @@
+﻿@using ApexCharts
+@using DashboardPOC.Interfaces
+@inject IOrderService OrderService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inherits DashboardPOC.Components.Charts.Base.ChartComponentBase
+
+@if (Data == null)
+{
+    <MudPaper Outlined="true" Elevation="2">
+        <MudProgressCircular Color="Color.Default" Indeterminate="true"
+                             Class="object-center" />
+    </MudPaper>
+}
+else
+{
+    <MudPaper Outlined="true" Elevation="2">
+        <MudText Class="ma-4">@Title</MudText>
+
+        <div class="mx-2 my-4">
+            <ApexChart TItem="IDataValue" OnDataPointSelection="@(OnClick)"
+                       Options="Options">
+
+                <ApexPointSeries TItem="IDataValue"
+                                 Items="Data"
+                                 SeriesType="SeriesType.Donut"
+                                 XValue="@(e => e.Name)"
+                                 YValue="@(e => e.Value)"
+                                 OrderBy="@(e => e.X)"
+                                 ShowDataLabels />
+
+            </ApexChart>
+        </div>
+    </MudPaper>
+}
+
+@code {
+
+    public override ChartType Type => ChartType.Donut;
+
+    protected override Task OnInitializedAsync()
+    {
+        Options = ChartOptionsFactory.CreateDonutOptions<IDataValue>(this);
+        return Task.CompletedTask;
+    }
+
+    private void OnClick(SelectedData<IDataValue> data)
+    {
+        SelectedData = data;
+        SelectedValue = data.DataPoint.Items.ToList();
+
+        var name = SelectedValue?.Select(d => d.Name).FirstOrDefault();
+
+        Snackbar.Add($"You selected '{name}'.", Severity.Info, config =>
+        {
+            config.Onclick = snackbar =>
+            {
+                Snackbar.Add($"Navigating to '/details/{name}");
+
+                return Task.CompletedTask;
+            };
+        });
+    }
+}
